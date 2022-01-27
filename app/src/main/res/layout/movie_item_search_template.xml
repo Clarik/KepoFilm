@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/iv_movie_search_image"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        >
+    </ImageView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+        <TextView
+            android:id="@+id/tv_movie_search_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Title"
+            >
+        </TextView>
+        <TextView
+            android:id="@+id/tv_movie_search_overview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ajsdkahsdkhasdahdsajsdkahsdkhasdahdsajsdkahsdkhasdahdsajsdkahsdkhasdahds"
+            android:maxLines = "2"
+            android:ellipsize = "end"
+            >
+        </TextView>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/tv_movie_search_release_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="42-422-23">
+
+            </TextView>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
