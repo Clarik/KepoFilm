@@ -43,10 +43,10 @@ public class MovieSearchAdapter extends RecyclerView.Adapter<MovieSearchAdapter.
 
         holder.tvSearchTemplateMovieOverview.setText(movie.getOverview());
 
-        holder.tvSearchTemplateMovieReleaseDate.setText(movie.getRelease_date());
+        holder.tvSearchTemplateMovieReleaseDate.setText(movie.getReleaseDate());
 
         String image_path = "https://image.tmdb.org/t/p/w500/"
-                + movie.getPoster_path();
+                + movie.getPosterPath();
 
         Glide.with(holder.itemView.getContext())
                 .load(image_path)

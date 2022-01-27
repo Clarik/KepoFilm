@@ -1,6 +1,8 @@
 package com.app.huaweiapp.request;
 
+import com.app.huaweiapp.model.Credit;
 import com.app.huaweiapp.model.Movie;
+import com.app.huaweiapp.response.MovieCastResponse;
 import com.app.huaweiapp.response.MovieSearchResponse;
 
 import retrofit2.Call;
@@ -9,6 +11,17 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface ApiEndPoint {
+
+//    https://api.themoviedb.org/3/movie/550/credits?
+    // api_key=cd327344d1c9a719f78166637986ce81
+    // &language=en-US
+    @GET("/3/movie/{movie_id}/credits")
+    Call<MovieCastResponse> getCast(
+            @Path("movie_id") Integer movie_id,
+            @Query("api_key") String key
+    );
+
+
 
     @GET("/3/movie/popular")
     Call<MovieSearchResponse> getPopular(
@@ -32,7 +45,7 @@ public interface ApiEndPoint {
 
     @GET("/3/movie/{movie_id}?")
     Call<Movie> getMovie(
-            @Path("movie_id") int movie_id,
+            @Path("movie_id") Integer movie_id,
             @Query("api_key") String key
     );
 

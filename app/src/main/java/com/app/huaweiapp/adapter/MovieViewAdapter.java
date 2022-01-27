@@ -41,14 +41,14 @@ public class MovieViewAdapter extends RecyclerView.Adapter<MovieViewAdapter.Movi
 
         holder.tvTemplateMovieTitle.setText(movie.getTitle());
 
-        String release_date = movie.getRelease_date();
+        String release_date = movie.getReleaseDate();
         String[] split = release_date.split("-");
         String release_year = split[0];
 
         holder.tvTemplateMovieYear.setText(release_year);
 
         String image_path = "https://image.tmdb.org/t/p/w500/"
-                + movie.getPoster_path();
+                + movie.getPosterPath();
 
         Glide.with(holder.itemView.getContext())
                 .load(image_path)

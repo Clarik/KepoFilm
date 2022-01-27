@@ -7,14 +7,23 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.app.huaweiapp.model.Cast;
+import com.app.huaweiapp.model.Credit;
 import com.app.huaweiapp.model.Movie;
 import com.app.huaweiapp.request.ApiEndPoint;
 import com.app.huaweiapp.request.ApiService;
+import com.app.huaweiapp.response.MovieCastResponse;
+import com.app.huaweiapp.response.MovieSearchResponse;
 import com.app.huaweiapp.utils.Credentials;
 import com.bumptech.glide.Glide;
 import com.huawei.hms.ads.AdParam;
 import com.huawei.hms.ads.HwAds;
 import com.huawei.hms.ads.banner.BannerView;
+
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -35,7 +44,9 @@ public class MovieDetail extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_detail);
 
-        getMovieWithID();
+        ApiEndPoint movieApi = ApiService.getMovieApi();
+        getMovieWithID(movieApi);
+        getMovieCast(movieApi);
 
         setUpAds();
     }
@@ -69,8 +80,35 @@ public class MovieDetail extends AppCompatActivity {
 
     }
 
-    private void getMovieWithID(){
-        ApiEndPoint movieApi = ApiService.getMovieApi();
+    void getMovieCast(ApiEndPoint movieApi){
+        Call<MovieCastResponse> responseCall =
+                movieApi.getCast(
+                        550,
+                        Credentials.API_KEY
+                );
+
+        responseCall.enqueue(new Callback<MovieCastResponse>() {
+            @Override
+            public void onResponse(Call<MovieCastResponse> call, Response<MovieCastResponse> response) {
+                if(response.code() == 200){
+                    showCast(response.body().getCasts());
+                }
+                else{
+                    try{
+                    }catch (Exception e){
+
+                    };
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MovieCastResponse> call, Throwable t) {
+
+            }
+        });
+    }
+
+    void getMovieWithID(ApiEndPoint movieApi){
         Call<Movie> responseCall =
                 movieApi.getMovie(
                         getIntent().getIntExtra(EXTRA_MOVIE_ID, 0),
@@ -97,10 +135,17 @@ public class MovieDetail extends AppCompatActivity {
         });
     }
 
+    void showCast(List<Cast> casts){
+        Log.d("Tag", "ululu");
+        for(Cast cast : casts){
+            Log.d("Tag", cast.getName());
+        }
+    }
+
     void showMovie(Movie movie){
         tvMovieTitle.setText(movie.getTitle());
 
-        String release_date = movie.getRelease_date();
+        String release_date = movie.getReleaseDate();
         String[] split = release_date.split("-");
         String release_year = split[0];
 
@@ -110,7 +155,7 @@ public class MovieDetail extends AppCompatActivity {
         tvMovieOverview.setText(movie.getOverview());
 
         String image_path = "https://image.tmdb.org/t/p/w500/"
-                + movie.getPoster_path();
+                + movie.getPosterPath();
 
         Glide.with(this)
                 .load(image_path)

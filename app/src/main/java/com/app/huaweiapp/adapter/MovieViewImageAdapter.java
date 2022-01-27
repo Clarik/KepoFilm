@@ -39,7 +39,7 @@ public class MovieViewImageAdapter extends RecyclerView.Adapter<MovieViewImageAd
         holder.setMovie_id(movie.getId());
 
         String image_path = "https://image.tmdb.org/t/p/w500/"
-                + movie.getPoster_path();
+                + movie.getPosterPath();
 
         Glide.with(holder.itemView.getContext())
                 .load(image_path)
