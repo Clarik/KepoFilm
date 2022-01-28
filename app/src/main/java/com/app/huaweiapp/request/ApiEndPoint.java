@@ -12,9 +12,7 @@ import retrofit2.http.Query;
 
 public interface ApiEndPoint {
 
-//    https://api.themoviedb.org/3/movie/550/credits?
-    // api_key=cd327344d1c9a719f78166637986ce81
-    // &language=en-US
+
     @GET("/3/movie/{movie_id}/credits")
     Call<MovieCastResponse> getCast(
             @Path("movie_id") Integer movie_id,

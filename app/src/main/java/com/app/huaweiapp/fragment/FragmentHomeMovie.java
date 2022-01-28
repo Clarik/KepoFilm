@@ -2,8 +2,6 @@ package com.app.huaweiapp.fragment;
 
 import android.app.Activity;
 import android.content.IntentSender;
-import android.content.pm.PackageManager;
-import android.location.Address;
 import android.location.Location;
 import android.os.Bundle;
 
@@ -23,6 +21,7 @@ import com.app.huaweiapp.R;
 import com.app.huaweiapp.adapter.MovieViewAdapter;
 import com.app.huaweiapp.adapter.MovieViewImageAdapter;
 import com.app.huaweiapp.model.Movie;
+import com.app.huaweiapp.permission.RequestLocationPermission;
 import com.app.huaweiapp.request.ApiEndPoint;
 import com.app.huaweiapp.request.ApiService;
 import com.app.huaweiapp.request.GeoApiEndPoint;
@@ -102,13 +101,9 @@ public class FragmentHomeMovie extends Fragment {
                 if(response.code() == 200){
                     com.app.huaweiapp.model.Location location = response.body();
                     com.app.huaweiapp.model.Address adr = location.getAddress();
-                    String countryCode = adr.getCountryCode().toUpperCase();
-
-                    String countryName = adr.getCountry();
-
-
-                    getPopular(countryName, countryCode);
-//                    Log.d("Loglog", "CC >>>>> " + countryCode);
+                    String countryCode;
+                    countryCode = adr.getCountryCode().toUpperCase();
+                    Log.d("Loglog", "CC >>>>> " + countryCode);
                 }
                 else{
                     try{
@@ -125,6 +120,8 @@ public class FragmentHomeMovie extends Fragment {
     }
 
     void setUpLocation(){
+        RequestLocationPermission.requestLocationPermission(v.getContext());
+
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(v.getContext());
         mSettingsClient = LocationServices.getSettingsClient(v.getContext());
         mLocationRequest = new LocationRequest();
@@ -133,23 +130,17 @@ public class FragmentHomeMovie extends Fragment {
         // Sets the priority
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         if (null == mLocationCallback) {
-
             mLocationCallback = new LocationCallback() {
                 @Override
                 public void onLocationResult(LocationResult locationResult) {
                     if (locationResult != null) {
-                        List<Address> addresses = null;
                         List<Location> locations = locationResult.getLocations();
                         if (!locations.isEmpty()) {
                             for (Location location : locations) {
-//                                Toast.makeText(v.getContext(),
-//                                        "onLocationResult location[Longitude,Latitude,Accuracy]:" + location.getLongitude()
-//                                                + "," + location.getLatitude() + "," + location.getAccuracy(), Toast.LENGTH_LONG).show();
-                                double latitude = location.getLatitude();
+                                Log.d("Loglog", "Longitude " + location.getLongitude() + " Latitude " + location.getLatitude());
                                 double longitude = location.getLongitude();
-                                getCountryCode(latitude, longitude);
-
-
+                                double latitude = location.getLatitude();
+                                getCountryCode(longitude, latitude);
                             }
                         }
                     }
@@ -182,7 +173,8 @@ public class FragmentHomeMovie extends Fragment {
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
-//                                    Toast.makeText(v.getContext(),  "requestLocationUpdatesWithCallback onSuccess", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(v.getContext(),  "requestLocationUpdatesWithCallback onSuccess", Toast.LENGTH_LONG).show();
+
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {
@@ -204,7 +196,7 @@ public class FragmentHomeMovie extends Fragment {
                                     try {
                                         //When the startResolutionForResult is invoked, a dialog box is displayed, asking you to open the corresponding permission.
                                         ResolvableApiException rae = (ResolvableApiException) e;
-                                        rae.startResolutionForResult( (Activity) v.getContext(), 0);
+                                        rae.startResolutionForResult((Activity) v.getContext(), 0);
                                     } catch (IntentSender.SendIntentException sie) {
                                         Log.e(TAG, "PendingIntent unable to execute request.");
                                     }
@@ -218,27 +210,6 @@ public class FragmentHomeMovie extends Fragment {
             Log.i(TAG,  "requestLocationUpdatesWithCallback exception:" + e.getMessage());
         }
     }
-
-    private void removeLocationUpdatesWithCallback() {
-        try {
-            Task<Void> voidTask = mFusedLocationProviderClient.removeLocationUpdates(mLocationCallback);
-            voidTask.addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
-//                    Toast.makeText( v.getContext(),"removeLocationUpdatesWithCallback onSuccess", Toast.LENGTH_LONG).show();
-                }
-            })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(Exception e) {
-                            Log.e(TAG,"removeLocationUpdatesWithCallback onFailure:" + e.getMessage());
-                        }
-                    });
-        } catch (Exception e) {
-            Log.i(TAG,  "removeLocationUpdatesWithCallback exception:" + e.getMessage());
-        }
-    }
-
 
     void setUpTopRatedRecyclerView(){
         RecyclerView topRatedRecyclerView = v.findViewById(R.id.rv_top_rated_movie);
@@ -276,7 +247,6 @@ public class FragmentHomeMovie extends Fragment {
             }
         });
     }
-
 
     void setUpPopularRecyclerView(){
         RecyclerView popularRecyclerView = v.findViewById(R.id.rv_popular_movie);

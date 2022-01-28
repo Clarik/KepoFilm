@@ -15,11 +15,9 @@
 */
 package com.app.huaweiapp;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
+import com.app.huaweiapp.permission.RequestLocationPermission;
 import com.app.huaweiapp.request.GeoApiEndPoint;
 import com.app.huaweiapp.request.GeoApiService;
 import com.huawei.hmf.tasks.OnFailureListener;
@@ -38,13 +36,9 @@ import com.huawei.hms.location.LocationSettingsResponse;
 import com.huawei.hms.location.LocationSettingsStatusCodes;
 import com.huawei.hms.location.SettingsClient;
 
-
-
 import android.app.Activity;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Looper;
@@ -69,9 +63,6 @@ public class RequestLocationUpdatesWithCallbackActivity extends Activity impleme
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private SettingsClient mSettingsClient;
 
-
-    String countryCode = "";
-
     protected void getCountryCode(Double latitude, Double longitude){
 
         GeoApiEndPoint geoApi = GeoApiService.getGeoApi();
@@ -85,6 +76,7 @@ public class RequestLocationUpdatesWithCallbackActivity extends Activity impleme
                 if(response.code() == 200){
                     com.app.huaweiapp.model.Location location = response.body();
                     com.app.huaweiapp.model.Address adr = location.getAddress();
+                    String countryCode;
                     countryCode = adr.getCountryCode().toUpperCase();
                     Log.d("Loglog", "CC >>>>> " + countryCode);
                 }
@@ -119,23 +111,17 @@ public class RequestLocationUpdatesWithCallbackActivity extends Activity impleme
         // Sets the priority
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         if (null == mLocationCallback) {
-
             mLocationCallback = new LocationCallback() {
                 @Override
                 public void onLocationResult(LocationResult locationResult) {
                     if (locationResult != null) {
-                        List<Address> addresses = null;
                         List<Location> locations = locationResult.getLocations();
                         if (!locations.isEmpty()) {
                             for (Location location : locations) {
                                 Toast.makeText(RequestLocationUpdatesWithCallbackActivity.this,
                                         "onLocationResult location[Longitude,Latitude,Accuracy]:" + location.getLongitude()
                                                 + "," + location.getLatitude() + "," + location.getAccuracy(), Toast.LENGTH_LONG).show();
-                                double latitude = location.getLatitude();
-                                double longitude = location.getLongitude();
-                                getCountryCode(latitude, longitude);
-
-
+                                getCountryCode(location.getLatitude(), location.getLongitude());
                             }
                         }
                     }

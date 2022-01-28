@@ -1,12 +1,16 @@
 package com.app.huaweiapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.app.huaweiapp.adapter.MovieCastAdapter;
+import com.app.huaweiapp.adapter.MovieViewImageAdapter;
 import com.app.huaweiapp.model.Cast;
 import com.app.huaweiapp.model.Credit;
 import com.app.huaweiapp.model.Movie;
@@ -80,6 +84,17 @@ public class MovieDetail extends AppCompatActivity {
 
     }
 
+    void setUpMovieCastRecyclerView(Vector<Cast> castList){
+        RecyclerView movieCastRecyclerView = findViewById(R.id.rv_movie_cast);
+
+        MovieCastAdapter adapter = new MovieCastAdapter(this, castList);
+
+        movieCastRecyclerView.setAdapter(adapter);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        movieCastRecyclerView.setLayoutManager(layoutManager);
+    }
+
     void getMovieCast(ApiEndPoint movieApi){
         Call<MovieCastResponse> responseCall =
                 movieApi.getCast(
@@ -91,7 +106,7 @@ public class MovieDetail extends AppCompatActivity {
             @Override
             public void onResponse(Call<MovieCastResponse> call, Response<MovieCastResponse> response) {
                 if(response.code() == 200){
-                    showCast(response.body().getCasts());
+                    setUpMovieCastRecyclerView(new Vector<>(response.body().getCasts()));
                 }
                 else{
                     try{
@@ -133,13 +148,6 @@ public class MovieDetail extends AppCompatActivity {
 
             }
         });
-    }
-
-    void showCast(List<Cast> casts){
-        Log.d("Tag", "ululu");
-        for(Cast cast : casts){
-            Log.d("Tag", cast.getName());
-        }
     }
 
     void showMovie(Movie movie){

@@ -125,10 +125,12 @@ public class MainActivity extends AppCompatActivity {
         Log.i(TAG,"code: Display Name -> "+authAccount.getDisplayName());
         Log.i(TAG,"code: Email -> "+authAccount.getEmail());
         // TODO: After obtaining the authorization code, your app needs to send it to the app server.
-        Intent i = new Intent(MainActivity.this, MainActivity.class);
+        Intent i = new Intent(MainActivity.this, HomeActivity.class);
+//        Intent i = new Intent(MainActivity.this, MainActivity.class);
 //        i.putExtra("name", authAccount.getDisplayName());
 //        i.putExtra("pic", authAccount.getAvatarUriString());
 //        i.putExtra("email", authAccount.getEmail());
+
         startActivity(i);
         finish();
     }
