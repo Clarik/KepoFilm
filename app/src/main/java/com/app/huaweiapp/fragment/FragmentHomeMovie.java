@@ -87,6 +87,7 @@ public class FragmentHomeMovie extends Fragment {
         setUpLocation();
         requestLocationUpdatesWithCallback();
 
+
         return v;
     }
 
@@ -137,7 +138,7 @@ public class FragmentHomeMovie extends Fragment {
         popularRecyclerView.setLayoutManager(new GridLayoutManager(v.getContext(), 2));
     }
 
-    void getPopular(String countryName, String countryCode){
+    void getPopular(String countryCode){
         ApiEndPoint movieApi = ApiService.getMovieApi();
         Call<MovieSearchResponse> responseCall =
                 movieApi.getPopular(
@@ -146,12 +147,16 @@ public class FragmentHomeMovie extends Fragment {
                         countryCode
                 );
 
-
+        Log.d("Loglog", "Link " + responseCall.request().url().toString());
         responseCall.enqueue(new Callback<MovieSearchResponse>() {
             @Override
             public void onResponse(Call<MovieSearchResponse> call, Response<MovieSearchResponse> response) {
                 if(response.code() == 200){
                     popularMovieList = new Vector<Movie>(new ArrayList<>(response.body().getMovies()));
+                    for (Movie m:
+                         popularMovieList) {
+                        Log.d("Loglog",m.getOriginalTitle());
+                    }
                     setUpPopularRecyclerView();
                 }
             }
@@ -187,6 +192,7 @@ public class FragmentHomeMovie extends Fragment {
                         Log.d("Loglog", "Error " + response.errorBody().toString());
                     }catch (Exception e){};
                 }
+                getPopular(countryCode);
             }
 
             @Override
@@ -255,7 +261,6 @@ public class FragmentHomeMovie extends Fragment {
                                     // Stop Location Updates after Success
                                     if(countryCode != ""){
                                         mFusedLocationProviderClient.removeLocationUpdates(mLocationCallback);
-                                        Toast.makeText(v.getContext(),  "Country code: " + countryCode, Toast.LENGTH_LONG).show();
                                     }
 
                                 }
