@@ -19,6 +19,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/bottom_menu"
         android:background="@color/colorPrimary"
+        app:itemTextColor="@color/white"
         >
 
     </com.google.android.material.bottomnavigation.BottomNavigationView>
@@ -33,7 +34,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:navGraph="@navigation/home_nav" />
+        app:navGraph="@navigation/home_nav"
+        />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
