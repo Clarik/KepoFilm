@@ -38,13 +38,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 //        Intent intent = new Intent(MainActivity.this, BannerActivity.class);
-        Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-
-//        Intent intent = new Intent(MainActivity.this, RequestLocationUpdatesWithCallbackActivity.class);
-        startActivity(intent);
-
+//        Intent intent = new Intent(MainActivity.this, HomeActivity.class);
 //
-//        setLoginOnClick();
+//        Intent intent = new Intent(MainActivity.this, RequestLocationUpdatesWithCallbackActivity.class);
+//        startActivity(intent);
+
+        setLoginOnClick();
     }
 
 
@@ -126,10 +125,6 @@ public class MainActivity extends AppCompatActivity {
         Log.i(TAG,"code: Email -> "+authAccount.getEmail());
         // TODO: After obtaining the authorization code, your app needs to send it to the app server.
         Intent i = new Intent(MainActivity.this, HomeActivity.class);
-//        Intent i = new Intent(MainActivity.this, MainActivity.class);
-//        i.putExtra("name", authAccount.getDisplayName());
-//        i.putExtra("pic", authAccount.getAvatarUriString());
-//        i.putExtra("email", authAccount.getEmail());
 
         startActivity(i);
         finish();

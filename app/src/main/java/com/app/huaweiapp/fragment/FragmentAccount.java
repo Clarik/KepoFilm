@@ -1,66 +1,127 @@
 package com.app.huaweiapp.fragment;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.app.huaweiapp.HomeActivity;
+import com.app.huaweiapp.MainActivity;
 import com.app.huaweiapp.R;
+import com.bumptech.glide.Glide;
+import com.huawei.hmf.tasks.OnFailureListener;
+import com.huawei.hmf.tasks.OnSuccessListener;
+import com.huawei.hmf.tasks.Task;
+import com.huawei.hms.support.account.AccountAuthManager;
+import com.huawei.hms.support.account.request.AccountAuthParams;
+import com.huawei.hms.support.account.request.AccountAuthParamsHelper;
+import com.huawei.hms.support.account.result.AuthAccount;
+import com.huawei.hms.support.account.service.AccountAuthService;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link FragmentAccount#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class FragmentAccount extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    View v;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    TextView tvAccountName;
+    ImageView ivAccountProfilePicture;
+    Button btnLogOut;
 
     public FragmentAccount() {
         // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment FragmentAccount.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static FragmentAccount newInstance(String param1, String param2) {
-        FragmentAccount fragment = new FragmentAccount();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_account, container, false);
+        v = inflater.inflate(R.layout.fragment_account, container, false);
+
+        setUpTextView(v);
+        setUpImageView(v);
+        setUpButton(v);
+
+        setUpAccountData();
+
+        return v;
     }
+
+    void setUpAccountData(){
+        AccountAuthService mAuthService;
+        AccountAuthParams mAuthParam;
+        mAuthParam = new AccountAuthParamsHelper(AccountAuthParams.DEFAULT_AUTH_REQUEST_PARAM).setEmail().createParams();
+        mAuthService = AccountAuthManager.getService(getActivity(), mAuthParam);
+        Task<AuthAccount> task = mAuthService.silentSignIn();
+        task.addOnSuccessListener(new OnSuccessListener<AuthAccount>() {
+            @Override
+            public void onSuccess(AuthAccount authAccount) {
+                tvAccountName.setText(authAccount.getDisplayName());
+                Glide.with(getContext())
+                        .load(authAccount.getAvatarUri())
+                        .into(ivAccountProfilePicture);
+            }
+        });
+    }
+
+    void setUpTextView(View v){
+        tvAccountName = v.findViewById(R.id.tv_account_name);
+    }
+
+    void setUpImageView(View v){
+        ivAccountProfilePicture = v.findViewById(R.id.iv_account_profile_picture);
+    }
+
+    void setUpButton(View v){
+        btnLogOut = v.findViewById(R.id.HuaweiIdSignOutButton);
+        btnLogOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                signOut();
+            }
+        });
+    }
+
+    void signOut() {
+        AccountAuthService mAuthService;
+        AccountAuthParams mAuthParam;
+
+        mAuthParam = new AccountAuthParamsHelper(AccountAuthParams.DEFAULT_AUTH_REQUEST_PARAM)
+                .setEmail()
+                .setAuthorizationCode()
+                .createParams();
+
+        mAuthService = AccountAuthManager.getService( getActivity(), mAuthParam);
+
+        Task<Void> signOutTask = mAuthService.signOut();
+        signOutTask.addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.i("Loglog", "signOut Success");
+                Intent intent = new Intent(getContext(), MainActivity.class);
+                startActivity(intent);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(Exception e) {
+                Log.i("Loglog", "signOut fail");
+            }
+        });
+    }
+
+
 }
