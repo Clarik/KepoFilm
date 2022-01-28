@@ -98,7 +98,7 @@ public class MovieDetail extends AppCompatActivity {
     void getMovieCast(ApiEndPoint movieApi){
         Call<MovieCastResponse> responseCall =
                 movieApi.getCast(
-                        550,
+                        getIntent().getIntExtra(EXTRA_MOVIE_ID, 0),
                         Credentials.API_KEY
                 );
 
