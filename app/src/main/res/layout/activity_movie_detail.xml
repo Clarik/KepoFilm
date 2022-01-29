@@ -9,6 +9,7 @@
     android:orientation="vertical"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
+    android:background="@color/colorPrimary"
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -20,6 +21,19 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             >
+
+            <ImageView
+                android:id="@+id/iv_movie_detail_image"
+                android:layout_width="250dp"
+                android:layout_height="400dp"
+                android:padding="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.502"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"></ImageView>
+
             <LinearLayout
                 android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
@@ -28,33 +42,32 @@
                 android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <ImageView
-                    android:id="@+id/iv_movie_detail_image"
-                    android:layout_width="175dp"
-                    android:layout_height="300dp"
-                    android:padding="10dp"></ImageView>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_movie_detail_image">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:layout_marginBottom="10dp">
 
                     <TextView
                         android:id="@+id/tv_movie_detail_title"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Title"
+                        android:textAlignment="center"
                         android:textSize="@dimen/hiad_48_dp"
+                        android:layout_marginBottom="10dp"
                         android:textStyle="bold"></TextView>
 
                     <TextView
                         android:id="@+id/tv_movie_detail_year"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Year"
+                        android:textAlignment="center"
                         android:textSize="@dimen/hiad_22_dp">
                     </TextView>
                 </LinearLayout>

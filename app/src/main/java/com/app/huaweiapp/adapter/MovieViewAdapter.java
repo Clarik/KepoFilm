@@ -45,7 +45,7 @@ public class MovieViewAdapter extends RecyclerView.Adapter<MovieViewAdapter.Movi
         String[] split = release_date.split("-");
         String release_year = split[0];
 
-        holder.tvTemplateMovieYear.setText(release_year);
+        holder.tvTemplateMovieYear.setText("(" + release_year + ")");
 
         String image_path = "https://image.tmdb.org/t/p/w500/"
                 + movie.getPosterPath();
