@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.app.huaweiapp.R;
 import com.app.huaweiapp.adapter.MovieViewAdapter;
 import com.app.huaweiapp.adapter.MovieViewImageAdapter;
+import com.app.huaweiapp.database.PopularMovies;
 import com.app.huaweiapp.model.Movie;
 import com.app.huaweiapp.permission.RequestLocationPermission;
 import com.app.huaweiapp.request.ApiEndPoint;
@@ -60,6 +61,7 @@ public class FragmentHomeMovie extends Fragment {
     Vector<Movie> popularMovieList = new Vector<>();
     View v;
     String countryCode = "";
+    PopularMovies database = PopularMovies.getInstance();
 
     public static final String TAG = "LocationUpdatesCallback";
     LocationCallback mLocationCallback;
@@ -84,8 +86,14 @@ public class FragmentHomeMovie extends Fragment {
         v = inflater.inflate(R.layout.fragment_home_movie, container, false);
         getTopRated();
 
-        setUpLocation();
-        requestLocationUpdatesWithCallback();
+        popularMovieList = database.getListPopularMovies();
+        if(popularMovieList.isEmpty()){
+            setUpLocation();
+            requestLocationUpdatesWithCallback();
+        }
+        else{
+            setUpPopularRecyclerView();
+        }
 
 
         return v;
@@ -157,6 +165,7 @@ public class FragmentHomeMovie extends Fragment {
                          popularMovieList) {
                         Log.d("Loglog",m.getOriginalTitle());
                     }
+                    database.setListPopularMovies(popularMovieList);
                     setUpPopularRecyclerView();
                 }
             }
