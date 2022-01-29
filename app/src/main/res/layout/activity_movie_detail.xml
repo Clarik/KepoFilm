@@ -32,7 +32,8 @@
                 app:layout_constraintHorizontal_bias="0.502"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0"></ImageView>
+                app:layout_constraintVertical_bias="0.0"
+                />
 
             <LinearLayout
                 android:id="@+id/linearLayout"
@@ -60,7 +61,7 @@
                         android:textAlignment="center"
                         android:textSize="@dimen/hiad_48_dp"
                         android:layout_marginBottom="10dp"
-                        android:textStyle="bold"></TextView>
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/tv_movie_detail_year"
@@ -98,13 +99,14 @@
                     android:id="@+id/tv_movie_detail_release_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="09-10-203"></TextView>
+                    android:text="Release Date"></TextView>
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/linearlayout3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:orientation="vertical"
                 app:layout_constraintTop_toBottomOf="@+id/linearlayout2"
                 android:paddingBottom="10dp">
@@ -112,9 +114,35 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Overview"
+                    android:text="Genres"
                     android:textStyle="bold"
                     ></TextView>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:background="@color/white"
+                    android:layout_height="2dp"/>
+
+                <TextView
+                    android:id="@+id/tv_genres"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Genres"></TextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearlayout4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@+id/linearlayout3"
+                android:paddingBottom="10dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Overview"
+                    android:textStyle="bold" />
 
                 <View
                     android:layout_width="match_parent"
@@ -125,15 +153,15 @@
                     android:id="@+id/tv_movie_detail_overview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Overviewviewview"></TextView>
+                    android:text="Overview" />
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/linearlayout4"
+                android:id="@+id/linearlayout5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintTop_toBottomOf="@+id/linearlayout3">
+                app:layout_constraintTop_toBottomOf="@+id/linearlayout4">
 
                 <TextView
                     android:layout_width="match_parent"

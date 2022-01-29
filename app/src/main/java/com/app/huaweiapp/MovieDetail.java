@@ -14,6 +14,7 @@ import com.app.huaweiapp.adapter.MovieCastAdapter;
 import com.app.huaweiapp.adapter.MovieViewImageAdapter;
 import com.app.huaweiapp.model.Cast;
 import com.app.huaweiapp.model.Credit;
+import com.app.huaweiapp.model.Genre;
 import com.app.huaweiapp.model.Movie;
 import com.app.huaweiapp.request.ApiEndPoint;
 import com.app.huaweiapp.request.ApiService;
@@ -38,7 +39,7 @@ public class MovieDetail extends AppCompatActivity {
 
     public static final String EXTRA_MOVIE_ID = "movie_id";
 
-    TextView tvMovieTitle, tvMovieYear, tvMovieReleaseDate, tvMovieOverview;
+    TextView tvMovieTitle, tvMovieYear, tvMovieReleaseDate, tvMovieOverview, tvGenres;
 
     ImageView ivMovieImage;
 
@@ -80,6 +81,7 @@ public class MovieDetail extends AppCompatActivity {
         tvMovieYear = findViewById(R.id.tv_movie_detail_year);
         tvMovieReleaseDate = findViewById(R.id.tv_movie_detail_release_date);
         tvMovieOverview = findViewById(R.id.tv_movie_detail_overview);
+        tvGenres = findViewById(R.id.tv_genres);
 
         ivMovieImage = findViewById(R.id.iv_movie_detail_image);
 
@@ -166,9 +168,14 @@ public class MovieDetail extends AppCompatActivity {
 
         tvMovieYear.setText(release_year);
         tvMovieReleaseDate.setText(release_date);
+        String genres = "";
+        List<Genre> listGenre = movie.getGenres();
+        for(int i = 0; i < listGenre.size(); i++){
+            genres = genres + ((i > 0) ? ", " : "") + listGenre.get(i).getName();
+        }
 
+        tvGenres.setText(genres);
         tvMovieOverview.setText(movie.getOverview());
-
         String image_path = "https://image.tmdb.org/t/p/w500/"
                 + movie.getPosterPath();
 
