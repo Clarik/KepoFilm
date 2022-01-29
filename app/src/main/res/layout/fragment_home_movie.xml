@@ -40,9 +40,9 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_marginBottom="10dp">
+            android:layout_marginBottom="30dp">
             <TextView
                 android:id="@+id/tv_popular_country"
                 android:layout_width="match_parent"
@@ -51,13 +51,14 @@
                 android:textSize="@dimen/hiad_32_dp"
                 android:textStyle="bold"
                 android:layout_marginBottom="10dp"
-                android:layout_marginLeft="10dp">
+                android:layout_marginStart="10dp">
             </TextView>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_popular_movie"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp">
             </androidx.recyclerview.widget.RecyclerView>
         </LinearLayout>
     </LinearLayout>
