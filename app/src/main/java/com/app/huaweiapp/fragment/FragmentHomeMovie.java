@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.huaweiapp.R;
@@ -92,6 +93,8 @@ public class FragmentHomeMovie extends Fragment {
             requestLocationUpdatesWithCallback();
         }
         else{
+            TextView tvPopular = v.findViewById(R.id.tv_popular_country);
+            tvPopular.setText("Popular Movie (" + database.getCountryName() +")");
             setUpPopularRecyclerView();
         }
 
@@ -101,7 +104,6 @@ public class FragmentHomeMovie extends Fragment {
 
     void setUpTopRatedRecyclerView(){
         RecyclerView topRatedRecyclerView = v.findViewById(R.id.rv_top_rated_movie);
-
         MovieViewImageAdapter adapter = new MovieViewImageAdapter(v.getContext(), topRatedMovieList);
 
         topRatedRecyclerView.setAdapter(adapter);
@@ -166,6 +168,8 @@ public class FragmentHomeMovie extends Fragment {
                         Log.d("Loglog",m.getOriginalTitle());
                     }
                     database.setListPopularMovies(popularMovieList);
+                    TextView tvPopular = v.findViewById(R.id.tv_popular_country);
+                    tvPopular.setText("Popular Movie (" + database.getCountryName() +")");
                     setUpPopularRecyclerView();
                 }
             }
@@ -193,6 +197,7 @@ public class FragmentHomeMovie extends Fragment {
                     com.app.huaweiapp.model.Address adr = location.getAddress();
 
                     countryCode = adr.getCountryCode().toUpperCase();
+                    database.setCountryName(adr.getCountry());
                     Log.d("Loglog", "CC >>>>> " + countryCode);
                 }
                 else{
