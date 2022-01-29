@@ -119,8 +119,8 @@ public class MainActivity extends AppCompatActivity {
         Log.i(TAG,"code: Avatar Uri -> "+authAccount.getAvatarUri());
         Log.i(TAG,"code: Display Name -> "+authAccount.getDisplayName());
         Log.i(TAG,"code: Email -> "+authAccount.getEmail());
-        Log.d("Loglog", authAccount.getDisplayName());
-        // TODO: After obtaining the authorization code, your app needs to send it to the app server.
+        Log.d("MovieAlley", "Account Name: " + authAccount.getDisplayName());
+
         Intent i = new Intent(MainActivity.this, HomeActivity.class);
         i.putExtra("DISPLAY NAME", authAccount.getDisplayName());
         i.putExtra("EMAIL", authAccount.getEmail());
@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
                 // The sign-in is successful, and the authAccount object that contains the HUAWEI ID information is obtained.
                 AuthAccount authAccount = authAccountTask.getResult();
                 dealWithResultOfSignIn(authAccount);
-                Log.i(TAG, "onActivitResult of sigInInIntent, request code: " + REQUEST_CODE_SIGN_IN);
+                Log.i(TAG, "onActivityResult of sigInInIntent, request code: " + REQUEST_CODE_SIGN_IN);
             } else {
                 // The sign-in fails. Find the cause from the status code. For more information, please refer to Error Codes.
                 Log.e(TAG, "sign in failed : " +((ApiException)authAccountTask.getException()).getStatusCode());

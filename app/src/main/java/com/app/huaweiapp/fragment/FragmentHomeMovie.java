@@ -231,7 +231,7 @@ public class FragmentHomeMovie extends Fragment {
                         List<Location> locations = locationResult.getLocations();
                         if (!locations.isEmpty()) {
                             for (Location location : locations) {
-                                Log.d("Loglog", "Longitude " + location.getLongitude() + " Latitude " + location.getLatitude());
+                                Log.d("MovieAlley", "Longitude " + location.getLongitude() + " Latitude " + location.getLatitude());
                                 double latitude = location.getLatitude();
                                 double longitude = location.getLongitude();
                                 setCountryCode(latitude, longitude);
@@ -244,10 +244,15 @@ public class FragmentHomeMovie extends Fragment {
                 public void onLocationAvailability(LocationAvailability locationAvailability) {
                     if (locationAvailability != null) {
                         boolean flag = locationAvailability.isLocationAvailable();
-                        Log.d("Loglog", "onLocationAvailability isLocationAvailable:" + flag);
-                    }
-                    else {
-                        Log.d("Loglog", "onLocationAvailability =:" + locationAvailability.getLocationStatus());
+                        Log.d("MovieAlley", "onLocationAvailability isLocationAvailable:" + flag);
+
+                        // If no location is available
+                        if(!flag){
+                            countryCode = "SG";
+                            database.setCountryName("Singapore");
+                            getPopular(countryCode);
+                        }
+
                     }
                 }
             };
@@ -270,7 +275,7 @@ public class FragmentHomeMovie extends Fragment {
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
-                                    Toast.makeText(v.getContext(),  "requestLocationUpdatesWithCallback onSuccess", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(v.getContext(),  "HMS Location Kit: Get Location Success", Toast.LENGTH_LONG).show();
 
                                     // Stop Location Updates after Success
                                     if(countryCode != ""){

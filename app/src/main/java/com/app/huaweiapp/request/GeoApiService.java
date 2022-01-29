@@ -8,8 +8,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class GeoApiService {
     public static final String BASE_URL = "https://nominatim.openstreetmap.org";
 
-    public static final String API_KEY = "cd327344d1c9a719f78166637986ce81";
-
     private static Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())

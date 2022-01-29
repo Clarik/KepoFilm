@@ -126,14 +126,14 @@ public class FragmentAccount extends Fragment {
         signOutTask.addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                Log.i("Loglog", "signOut Success");
+                Log.i("MovieAlley", "signOut Success");
                 Intent intent = new Intent(getContext(), MainActivity.class);
                 startActivity(intent);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(Exception e) {
-                Log.i("Loglog", "signOut fail");
+                Log.i("MovieAlley", "signOut fail");
             }
         });
     }
