@@ -1,6 +1,7 @@
 package com.app.huaweiapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
@@ -30,23 +31,16 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        Intent intent = new Intent(MainActivity.this, BannerActivity.class);
-//        Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-//
-//        Intent intent = new Intent(MainActivity.this, RequestLocationUpdatesWithCallbackActivity.class);
-//        startActivity(intent);
+
+        // Force disable dark mode
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
         setLoginOnClick();
     }
-
-
 
 
     void setLoginOnClick(){
@@ -57,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    // region Huawei Account Kit
     // AccountAuthService provides a set of APIs, including silentSignIn, getSignInIntent, and signOut.
     private AccountAuthService mAuthService;
 
@@ -151,4 +147,5 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+    //endregion
 }
