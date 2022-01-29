@@ -1,1 +1,5 @@
 /build
+agconnect-services.json
+build.gradle
+keystore.jks
+proguard-rules.pro
