@@ -157,7 +157,7 @@ public class FragmentHomeMovie extends Fragment {
                         countryCode
                 );
 
-        Log.d("Loglog", "Link " + responseCall.request().url().toString());
+        Log.d("MovieAlley", "Link " + responseCall.request().url().toString());
         responseCall.enqueue(new Callback<MovieSearchResponse>() {
             @Override
             public void onResponse(Call<MovieSearchResponse> call, Response<MovieSearchResponse> response) {
@@ -165,7 +165,7 @@ public class FragmentHomeMovie extends Fragment {
                     popularMovieList = new Vector<Movie>(new ArrayList<>(response.body().getMovies()));
                     for (Movie m:
                          popularMovieList) {
-                        Log.d("Loglog",m.getOriginalTitle());
+                        Log.d("MovieAlley",m.getOriginalTitle());
                     }
                     database.setListPopularMovies(popularMovieList);
                     TextView tvPopular = v.findViewById(R.id.tv_popular_country);
@@ -188,7 +188,7 @@ public class FragmentHomeMovie extends Fragment {
         Call<com.app.huaweiapp.model.Location> responseCall =
                 geoApi.getLocation("json",latitude,longitude
                 );
-        Log.d("Loglog", "Link " + responseCall.request().url().toString());
+        Log.d("MovieAlley", "Link " + responseCall.request().url().toString());
         responseCall.enqueue(new Callback<com.app.huaweiapp.model.Location>() {
             @Override
             public void onResponse(Call<com.app.huaweiapp.model.Location> call, Response<com.app.huaweiapp.model.Location> response) {
@@ -198,12 +198,14 @@ public class FragmentHomeMovie extends Fragment {
 
                     countryCode = adr.getCountryCode().toUpperCase();
                     database.setCountryName(adr.getCountry());
-                    Log.d("Loglog", "CC >>>>> " + countryCode);
+                    Log.d("MovieAlley", "CC >>>>> " + countryCode);
                 }
                 else{
                     try{
-                        countryCode = "US";
-                        Log.d("Loglog", "Error " + response.errorBody().toString());
+                        countryCode = "SG";
+                        database.setCountryName("Singapore");
+                        Toast.makeText(v.getContext(),  "API Unavailable. Defaulting to Singapore", Toast.LENGTH_LONG).show();
+                        Log.d("MovieAlley", "Error " + response.errorBody().toString());
                     }catch (Exception e){};
                 }
                 getPopular(countryCode);
@@ -250,6 +252,7 @@ public class FragmentHomeMovie extends Fragment {
                         if(!flag){
                             countryCode = "SG";
                             database.setCountryName("Singapore");
+                            Toast.makeText(v.getContext(),  "Location not available. Defaulting to Singapore", Toast.LENGTH_LONG).show();
                             getPopular(countryCode);
                         }
 

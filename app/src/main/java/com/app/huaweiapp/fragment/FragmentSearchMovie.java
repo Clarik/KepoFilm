@@ -98,7 +98,7 @@ public class FragmentSearchMovie extends Fragment {
                 }
                 else{
                     try{
-                        Log.d("Tag", "Error " + response.errorBody().toString());
+                        Log.d("MovieAlley", "Error " + response.errorBody().toString());
                     }catch (Exception e){
 
                     };
