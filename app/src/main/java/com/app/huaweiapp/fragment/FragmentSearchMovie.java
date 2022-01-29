@@ -61,7 +61,7 @@ public class FragmentSearchMovie extends Fragment {
     }
 
     void setUp(){
-        tv_emptyText = v.findViewById(R.id.tvEmptyTextSearchFragment);
+//        tv_emptyText = v.findViewById(R.id.tvEmptyTextSearchFragment);
 
         search = v.findViewById(R.id.searchFilm);
 
@@ -118,7 +118,7 @@ public class FragmentSearchMovie extends Fragment {
 
         MovieSearchAdapter adapter = new MovieSearchAdapter(v.getContext(), movieList);
 
-        tv_emptyText.setText(movieList.isEmpty() ? "Type what movie you want to search" : "");
+//        tv_emptyText.setText(movieList.isEmpty() ? "Type what movie you want to search" : "");
 
         searchRecyclerView.setAdapter(adapter);
 

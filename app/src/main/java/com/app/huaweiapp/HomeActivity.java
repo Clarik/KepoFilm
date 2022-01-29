@@ -5,6 +5,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
@@ -35,10 +36,12 @@ import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
 
+    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        intent = getIntent();
         setContentView(R.layout.activity_home);
         setUpNavView();
     }
@@ -62,7 +65,9 @@ public class HomeActivity extends AppCompatActivity {
                             selectedFragment = new FragmentSearchMovie();
                             break;
                         case R.id.fragmentAccount:
-                            selectedFragment = new FragmentAccount();
+                            selectedFragment = new FragmentAccount(intent.getStringExtra("DISPLAY NAME"),
+                                    intent.getStringExtra("EMAIL"),
+                                    intent.getStringExtra("AVATAR"));
                             break;
                     }
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container

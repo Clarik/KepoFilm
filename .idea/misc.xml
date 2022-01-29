@@ -3,12 +3,21 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/DarrylXavier/AndroidStudioProjects/MovieAlley/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.22135416666666666" />
         <entry key="..\:/Users/DarrylXavier/AndroidStudioProjects/MovieAlley/app/src/main/res/drawable/cast_bg.xml" value="0.225" />
+        <entry key="..\:/Users/DarrylXavier/AndroidStudioProjects/MovieAlley/app/src/main/res/drawable/ic_launcher_background.xml" value="0.22135416666666666" />
+        <entry key="..\:/Users/DarrylXavier/AndroidStudioProjects/MovieAlley/app/src/main/res/drawable/img_border.xml" value="0.22135416666666666" />
+        <entry key="..\:/Users/DarrylXavier/AndroidStudioProjects/MovieAlley/app/src/main/res/drawable/iv_bg.xml" value="0.22135416666666666" />
+        <entry key="..\:/Users/DarrylXavier/AndroidStudioProjects/MovieAlley/app/src/main/res/font/playfair_display.xml" value="0.23177083333333334" />
+        <entry key="..\:/Users/DarrylXavier/AndroidStudioProjects/MovieAlley/app/src/main/res/layout/activity_banner.xml" value="0.20885416666666667" />
         <entry key="..\:/Users/DarrylXavier/AndroidStudioProjects/MovieAlley/app/src/main/res/layout/activity_home.xml" value="0.20885416666666667" />
         <entry key="..\:/Users/DarrylXavier/AndroidStudioProjects/MovieAlley/app/src/main/res/layout/activity_main.xml" value="0.20885416666666667" />
-        <entry key="..\:/Users/DarrylXavier/AndroidStudioProjects/MovieAlley/app/src/main/res/layout/activity_movie_detail.xml" value="0.1" />
-        <entry key="..\:/Users/DarrylXavier/AndroidStudioProjects/MovieAlley/app/src/main/res/layout/fragment_home_movie.xml" value="0.1" />
+        <entry key="..\:/Users/DarrylXavier/AndroidStudioProjects/MovieAlley/app/src/main/res/layout/activity_movie_detail.xml" value="0.33" />
+        <entry key="..\:/Users/DarrylXavier/AndroidStudioProjects/MovieAlley/app/src/main/res/layout/fragment_account.xml" value="0.33" />
+        <entry key="..\:/Users/DarrylXavier/AndroidStudioProjects/MovieAlley/app/src/main/res/layout/fragment_home_movie.xml" value="0.15" />
+        <entry key="..\:/Users/DarrylXavier/AndroidStudioProjects/MovieAlley/app/src/main/res/layout/fragment_search_movie.xml" value="0.20885416666666667" />
         <entry key="..\:/Users/DarrylXavier/AndroidStudioProjects/MovieAlley/app/src/main/res/layout/movie_cast_item_template.xml" value="0.20885416666666667" />
+        <entry key="..\:/Users/DarrylXavier/AndroidStudioProjects/MovieAlley/app/src/main/res/layout/movie_item_search_template.xml" value="0.20885416666666667" />
       </map>
     </option>
   </component>

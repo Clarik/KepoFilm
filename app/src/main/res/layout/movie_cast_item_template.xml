@@ -14,9 +14,10 @@
     </ImageView>
     <TextView
         android:id="@+id/tv_movie_cast_name"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Caster name"
+        android:textAlignment="center"
         >
 
     </TextView>

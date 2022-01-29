@@ -9,19 +9,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:padding="10dp"
         >
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Search" />
+            android:text="Search"
+            android:textStyle="bold"
+            android:textSize="@dimen/hiad_20_dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_margin="5dp"
             android:background="@drawable/bg_search"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginBottom="10dp">
 
             <SearchView
                 android:id="@+id/searchFilm"
@@ -31,18 +35,10 @@
                 android:paddingStart="-10dp"
                 android:searchIcon="@drawable/ic_search"
                 android:theme="@style/SearchView"
+                android:queryHint="Type what movie you want to search"
                 />
 
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/tvEmptyTextSearchFragment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Type what movie you want to search"
-            >
-
-        </TextView>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_search_movie"
@@ -51,7 +47,5 @@
         </androidx.recyclerview.widget.RecyclerView>
 
     </LinearLayout>
-
-
 
 </FrameLayout>

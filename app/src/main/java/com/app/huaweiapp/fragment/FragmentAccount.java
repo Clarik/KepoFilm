@@ -2,6 +2,7 @@ package com.app.huaweiapp.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -18,6 +19,7 @@ import com.app.huaweiapp.HomeActivity;
 import com.app.huaweiapp.MainActivity;
 import com.app.huaweiapp.R;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.huawei.hmf.tasks.OnFailureListener;
 import com.huawei.hmf.tasks.OnSuccessListener;
 import com.huawei.hmf.tasks.Task;
@@ -31,12 +33,16 @@ public class FragmentAccount extends Fragment {
 
     View v;
 
-    TextView tvAccountName;
+    String name, email, avatarUri;
+    TextView tvAccountName, tvEmail;
     ImageView ivAccountProfilePicture;
     Button btnLogOut;
 
-    public FragmentAccount() {
+    public FragmentAccount(String name, String email, String avatarUri) {
         // Required empty public constructor
+        this.name = name;
+        this.email = email;
+        this.avatarUri = avatarUri;
     }
 
     @Override
@@ -62,24 +68,33 @@ public class FragmentAccount extends Fragment {
     }
 
     void setUpAccountData(){
-        AccountAuthService mAuthService;
-        AccountAuthParams mAuthParam;
-        mAuthParam = new AccountAuthParamsHelper(AccountAuthParams.DEFAULT_AUTH_REQUEST_PARAM).setEmail().createParams();
-        mAuthService = AccountAuthManager.getService(getActivity(), mAuthParam);
-        Task<AuthAccount> task = mAuthService.silentSignIn();
-        task.addOnSuccessListener(new OnSuccessListener<AuthAccount>() {
-            @Override
-            public void onSuccess(AuthAccount authAccount) {
-                tvAccountName.setText(authAccount.getDisplayName());
-                Glide.with(getContext())
-                        .load(authAccount.getAvatarUri())
-                        .into(ivAccountProfilePicture);
-            }
-        });
+        tvAccountName.setText("Hello, " + name + " !");
+        tvEmail.setText(email);
+
+        Uri uri = Uri.parse(avatarUri);
+        Glide.with(getContext())
+                .load(uri)
+                .apply(RequestOptions.circleCropTransform())
+                .into(ivAccountProfilePicture);
+//        AccountAuthService mAuthService;
+//        AccountAuthParams mAuthParam;
+//        mAuthParam = new AccountAuthParamsHelper(AccountAuthParams.DEFAULT_AUTH_REQUEST_PARAM).setEmail().createParams();
+//        mAuthService = AccountAuthManager.getService(getActivity(), mAuthParam);
+//        Task<AuthAccount> task = mAuthService.silentSignIn();
+//        task.addOnSuccessListener(new OnSuccessListener<AuthAccount>() {
+//            @Override
+//            public void onSuccess(AuthAccount authAccount) {
+//                tvAccountName.setText("Hello, " + authAccount.getDisplayName());
+//                Glide.with(getContext())
+//                        .load(authAccount.getAvatarUri())
+//                        .into(ivAccountProfilePicture);
+//            }
+//        });
     }
 
     void setUpTextView(View v){
         tvAccountName = v.findViewById(R.id.tv_account_name);
+        tvEmail = v.findViewById(R.id.tv_email);
     }
 
     void setUpImageView(View v){
