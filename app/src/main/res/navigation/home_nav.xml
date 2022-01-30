@@ -7,17 +7,17 @@
 
     <fragment
         android:id="@+id/fragmentHomeMovie"
-        android:name="com.app.huaweiapp.fragment.FragmentHomeMovie"
+        android:name="com.teammoviealley.moviealleyapp.fragment.FragmentHomeMovie"
         android:label="fragment_home_movie"
         tools:layout="@layout/fragment_home_movie" />
     <fragment
         android:id="@+id/fragmentSearchMovie"
-        android:name="com.app.huaweiapp.fragment.FragmentSearchMovie"
+        android:name="com.teammoviealley.moviealleyapp.fragment.FragmentSearchMovie"
         android:label="fragment_search_movie"
         tools:layout="@layout/fragment_search_movie" />
     <fragment
         android:id="@+id/fragmentAccount"
-        android:name="com.app.huaweiapp.fragment.FragmentAccount"
+        android:name="com.teammoviealley.moviealleyapp.fragment.FragmentAccount"
         android:label="fragment_account"
         tools:layout="@layout/fragment_account" />
 </navigation>
