@@ -56,8 +56,14 @@ public class MovieDetail extends AppCompatActivity {
         ApiEndPoint movieApi = ApiService.getMovieApi();
         getMovieWithID(movieApi);
         getMovieCast(movieApi);
+
+
+
         getMovieTrailer(movieApi);
+
+
         setUpAds();
+
     }
 
     void getMovieTrailer(ApiEndPoint movieApi){
@@ -90,23 +96,19 @@ public class MovieDetail extends AppCompatActivity {
     }
 
     void setUpVideoYoutube(String key){
+        Log.d("YoutubeTest", "Key : " + key);
 
-        YouTubePlayerView youTubePlayerView = findViewById(R.id.vp_movie_trailer);
-        getLifecycle().addObserver(youTubePlayerView);
-
-        youTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
+        vpMovieTrailer.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
             @Override
             public void onReady(YouTubePlayer youTubePlayer) {
-                String videoId = "S0Q4gqBUs7c";
-                youTubePlayer.loadVideo(videoId, 0);
+                youTubePlayer.loadVideo(key, 0);
             }
         });
 //
 //        vpMovieTrailer.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
 //            @Override
 //            public void onReady(@NonNull YouTubePlayer youTubePlayer) {
-////                youTubePlayer.loadVideo(key, 0);
-////                youTubePlayer.play();
+////
 //            }
 //        });
     }
@@ -139,6 +141,7 @@ public class MovieDetail extends AppCompatActivity {
 
         ivMovieImage = findViewById(R.id.iv_movie_detail_image);
 
+        vpMovieTrailer = findViewById(R.id.vp_movie_trailer);
     }
 
     void setUpMovieCastRecyclerView(Vector<Cast> castList){
