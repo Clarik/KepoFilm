@@ -30,6 +30,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 import com.teammoviealley.moviealleyapp.adapter.MovieCastAdapter;
+import com.teammoviealley.moviealleyapp.database.DatabaseHandler;
 import com.teammoviealley.moviealleyapp.database.FavoriteMovies;
 import com.teammoviealley.moviealleyapp.model.Cast;
 import com.teammoviealley.moviealleyapp.model.FavoriteMovie;
@@ -72,6 +73,11 @@ public class MovieDetail extends AppCompatActivity {
     Gson gson = new Gson();
     FavoriteMovies database = FavoriteMovies.getInstance();
     String email;
+
+
+    DatabaseHandler db;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -275,15 +281,34 @@ public class MovieDetail extends AppCompatActivity {
     }
 
     public void addFavorite(Integer id, String name, String path){
+
+        AccountAuthService mAuthService;
+        AccountAuthParams mAuthParam;
+        mAuthParam = new AccountAuthParamsHelper(AccountAuthParams.DEFAULT_AUTH_REQUEST_PARAM).setEmail().createParams();
+        mAuthService = AccountAuthManager.getService(this, mAuthParam);
+        Task<AuthAccount> task = mAuthService.silentSignIn();
+        task.addOnSuccessListener(new OnSuccessListener<AuthAccount>() {
+            @Override
+            public void onSuccess(AuthAccount authAccount) {
+                email = authAccount.getEmail().toString();
+                db = new DatabaseHandler(getApplicationContext());
+                db.insertFavorite(email, id, name, path);
+            }
+        });
+
+
+
+        /*
         FavoriteMovie fm = new FavoriteMovie(id, name, path);
         boolean success = database.checkAndAdd(fm);
         if(success){
-            syncFavorite();
+//            syncFavorite();
             Toast.makeText(this,  "Added to my Favorite", Toast.LENGTH_LONG).show();
         }
         else{
             Toast.makeText(this,  "Already added to favorite", Toast.LENGTH_LONG).show();
         }
+        */
     }
 
     public void syncFavorite(){
@@ -297,14 +322,16 @@ public class MovieDetail extends AppCompatActivity {
             @Override
             public void onSuccess(AuthAccount authAccount) {
                 email = authAccount.getEmail().toString();
+//                Toast.makeText(this,  email, Toast.LENGTH_LONG).show();
+                Log.d("YoutubeTest", "Email " + email);
+                String json = gson.toJson(database.getFavoriteMovies());
+                //String json = email;
+                StoreFavoriteMovie store = new StoreFavoriteMovie(email,json);
+                upsertToCloudDB(store);
             }
         });
         //email = "test@binus.ac.id";
-        Toast.makeText(this,  email, Toast.LENGTH_LONG).show();
-        String json = gson.toJson(database.getFavoriteMovies());
-        //String json = email;
-        StoreFavoriteMovie store = new StoreFavoriteMovie(email,json);
-        upsertToCloudDB(store);
+
     }
 
     public void upsertToCloudDB(StoreFavoriteMovie store){

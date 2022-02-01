@@ -36,6 +36,7 @@ import com.huawei.hms.support.account.request.AccountAuthParamsHelper;
 import com.huawei.hms.support.account.service.AccountAuthService;
 import com.teammoviealley.moviealleyapp.MainActivity;
 import com.teammoviealley.moviealleyapp.R;
+import com.teammoviealley.moviealleyapp.database.DatabaseHandler;
 import com.teammoviealley.moviealleyapp.database.FavoriteMovies;
 import com.teammoviealley.moviealleyapp.database.PopularMovies;
 import com.teammoviealley.moviealleyapp.model.FavoriteMovie;
@@ -58,6 +59,8 @@ public class FragmentFavorite extends Fragment {
     CloudDBZone mCloudDBZone;
     CloudDBZoneConfig mConfig;
 
+    DatabaseHandler db;
+
     public FragmentFavorite(String email) {
         // Required empty public constructor
         this.email = email;
@@ -76,7 +79,11 @@ public class FragmentFavorite extends Fragment {
                              Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_favorite, container, false);
 
+        db = new DatabaseHandler(getContext());
 
+        for(FavoriteMovie fav : db.getMovieFavorite(email)){
+            Log.d("Movmov", fav.getTitle());
+        }
 
         return v;
     }

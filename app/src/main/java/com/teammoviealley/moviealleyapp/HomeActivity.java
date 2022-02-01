@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.teammoviealley.moviealleyapp.fragment.FragmentAccount;
+import com.teammoviealley.moviealleyapp.fragment.FragmentFavorite;
 import com.teammoviealley.moviealleyapp.fragment.FragmentHomeMovie;
 import com.teammoviealley.moviealleyapp.fragment.FragmentSearchMovie;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -46,6 +47,11 @@ public class HomeActivity extends AppCompatActivity {
                             selectedFragment = new FragmentAccount(intent.getStringExtra("DISPLAY NAME"),
                                     intent.getStringExtra("EMAIL"),
                                     intent.getStringExtra("AVATAR"));
+                            break;
+                        case R.id.fragmentFavorite:
+                            selectedFragment = new FragmentFavorite(
+                                    intent.getStringExtra("EMAIL")
+                            );
                             break;
                     }
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container
