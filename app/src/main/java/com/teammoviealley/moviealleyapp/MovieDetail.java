@@ -14,9 +14,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.huawei.agconnect.AGCRoutePolicy;
+import com.huawei.agconnect.AGConnectInstance;
+import com.huawei.agconnect.AGConnectOptionsBuilder;
+import com.huawei.agconnect.auth.AGConnectAuth;
 import com.huawei.agconnect.cloud.database.AGConnectCloudDB;
 import com.huawei.agconnect.cloud.database.CloudDBZone;
 import com.huawei.agconnect.cloud.database.CloudDBZoneConfig;
+import com.huawei.agconnect.cloud.database.Text;
 import com.huawei.agconnect.cloud.database.exceptions.AGConnectCloudDBException;
 import com.huawei.hmf.tasks.OnFailureListener;
 import com.huawei.hmf.tasks.OnSuccessListener;
@@ -297,49 +302,61 @@ public class MovieDetail extends AppCompatActivity {
             @Override
             public void onSuccess(AuthAccount authAccount) {
                 email = authAccount.getEmail().toString();
+                Log.d("MovieAlley", "AAAAA: " + email);
+                String json = gson.toJson(database.getFavoriteMovies());
+                Log.d("MovieAlley", "AAAAA: " + json);
+                StoreFavoriteMovie store = new StoreFavoriteMovie();
+                store.setMovielist(json);
+                store.setEmail(email);
+                upsertToCloudDB(store);
             }
         });
-        //email = "test@binus.ac.id";
-        Toast.makeText(this,  email, Toast.LENGTH_LONG).show();
-        String json = gson.toJson(database.getFavoriteMovies());
-        //String json = email;
-        StoreFavoriteMovie store = new StoreFavoriteMovie(email,json);
-        upsertToCloudDB(store);
+
     }
 
     public void upsertToCloudDB(StoreFavoriteMovie store){
         mCloudDB.initialize(this);
+        Log.d("MovieAlley", "setelah init");
         mCloudDB = AGConnectCloudDB.getInstance();
+        Log.d("MovieAlley", "setelah mcloud");
         try {
+            Log.d("MovieAlley", "didalem try 1");
             mCloudDB.createObjectType(ObjectTypeInfoHelper.getObjectTypeInfo());
-
+            Log.d("MovieAlley", "didalem try 2");
         } catch (AGConnectCloudDBException e) {
-
+            Log.d("MovieAlley", "AAAA: " + e.toString() );
+            Log.d("MovieAlley", "AAAA: " + e.getMessage() );
         }
 
-        mConfig = new CloudDBZoneConfig("user",
+        mConfig = new CloudDBZoneConfig(
+                "StoreFavoriteMovie",
                 CloudDBZoneConfig.CloudDBZoneSyncProperty.CLOUDDBZONE_CLOUD_CACHE,
                 CloudDBZoneConfig.CloudDBZoneAccessProperty.CLOUDDBZONE_PUBLIC);
         mConfig.setPersistenceEnabled(true);
+        Log.d("MovieAlley", "masih idup");
 
         try {
             mCloudDBZone = mCloudDB.openCloudDBZone(mConfig, true);
 
         } catch (AGConnectCloudDBException e) {
-
+            Log.d("MovieAlley", "GAGAL2 " + e.getMessage() );
         }
-
+        Log.d("MovieAlley", store.getEmail());
+        Log.d("MovieAlley", store.getMovielist());
 
         Task<Integer> upsertTask = mCloudDBZone.executeUpsert(store);
         upsertTask.addOnSuccessListener(new OnSuccessListener<Integer>() {
             @Override
             public void onSuccess(Integer cloudDBZoneResult) {
-                Log.i("TAG", "Upsert " + cloudDBZoneResult + " records");
+                Log.d("MovieAlley", "Upsert oke" + cloudDBZoneResult + " records");
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(Exception e) {
-
+                Log.d("MovieAlley", "Upsert gagal" + e.getMessage() );
+                //gagal disini tapi errorcode beda"
+                //ghoib
+                // udah pake yg sama dari hasil generate dia padahal
             }
         });
     }

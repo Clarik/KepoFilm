@@ -125,7 +125,7 @@ public class FragmentFavorite extends Fragment {
         try {
             while (popInfoCursor.hasNext()) {
                 StoreFavoriteMovie value = popInfoCursor.next();
-                FavoriteMovie[] favArr = gson.fromJson(value.getFavoriteMovies(), FavoriteMovie[].class);
+                FavoriteMovie[] favArr = gson.fromJson(value.getMovielist().toString(), FavoriteMovie[].class);
                 Vector<FavoriteMovie> favlist = new Vector<FavoriteMovie>(Arrays.asList(favArr));
                 database.setFavoriteMovies(favlist);
 
