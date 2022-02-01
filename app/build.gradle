@@ -57,6 +57,7 @@ dependencies {
     implementation 'com.huawei.agconnect:agconnect-core:1.5.2.300'
     implementation 'com.huawei.hms:hwid:5.0.5.301'
     implementation 'com.huawei.hms:maps:5.0.5.301'
+    implementation 'com.huawei.agconnect:agconnect-cloud-database:1.5.0.300'
 
 
 
