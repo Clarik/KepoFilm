@@ -97,9 +97,11 @@ public class FragmentFavorite extends Fragment {
                 CloudDBZoneConfig.CloudDBZoneAccessProperty.CLOUDDBZONE_PUBLIC);
         mConfig.setPersistenceEnabled(true);
 
-        if (mCloudDBZone == null) {
-            Toast.makeText(getActivity(), "CloudDBZone is null, try re-open it", Toast.LENGTH_SHORT).show();
-            return;
+        try {
+            mCloudDBZone = mCloudDB.openCloudDBZone(mConfig, true);
+
+        } catch (AGConnectCloudDBException e) {
+
         }
 
         Task<CloudDBZoneSnapshot<StoreFavoriteMovie>> queryTask = mCloudDBZone.executeQuery(CloudDBZoneQuery.where(StoreFavoriteMovie.class).equalTo("email",email),
@@ -123,7 +125,7 @@ public class FragmentFavorite extends Fragment {
         try {
             while (popInfoCursor.hasNext()) {
                 StoreFavoriteMovie value = popInfoCursor.next();
-                FavoriteMovie[] favArr = gson.fromJson(value.getFavorite_movie(), FavoriteMovie[].class);
+                FavoriteMovie[] favArr = gson.fromJson(value.getFavoriteMovies(), FavoriteMovie[].class);
                 Vector<FavoriteMovie> favlist = new Vector<FavoriteMovie>(Arrays.asList(favArr));
                 database.setFavoriteMovies(favlist);
 
@@ -141,55 +143,7 @@ public class FragmentFavorite extends Fragment {
     }
 
 
-    public void addFavorite(Integer id, String name, String path){
-        FavoriteMovie fm = new FavoriteMovie(id, name, path);
-        boolean success = database.checkAndAdd(fm);
-        if(success){
-            syncFavorite();
-        }
-        else{
 
-        }
-    }
-
-    public void syncFavorite(){
-        String json = gson.toJson(database.getFavoriteMovies());
-        StoreFavoriteMovie store = new StoreFavoriteMovie(email,json);
-        upsertToCloudDB(store);
-    }
-
-    public void upsertToCloudDB(StoreFavoriteMovie store){
-        mCloudDB.initialize(getContext());
-        mCloudDB = AGConnectCloudDB.getInstance();
-        try {
-            mCloudDB.createObjectType(ObjectTypeInfoHelper.getObjectTypeInfo());
-
-        } catch (AGConnectCloudDBException e) {
-
-        }
-
-        mConfig = new CloudDBZoneConfig("user",
-                CloudDBZoneConfig.CloudDBZoneSyncProperty.CLOUDDBZONE_CLOUD_CACHE,
-                CloudDBZoneConfig.CloudDBZoneAccessProperty.CLOUDDBZONE_PUBLIC);
-        mConfig.setPersistenceEnabled(true);
-
-        if (mCloudDBZone == null) {
-            Toast.makeText(getActivity(), "CloudDBZone is null, try re-open it", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        Task<Integer> upsertTask = mCloudDBZone.executeUpsert(store);
-        upsertTask.addOnSuccessListener(new OnSuccessListener<Integer>() {
-            @Override
-            public void onSuccess(Integer cloudDBZoneResult) {
-                Log.i("TAG", "Upsert " + cloudDBZoneResult + " records");
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(Exception e) {
-
-            }
-        });
-    }
 
 
 }

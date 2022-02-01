@@ -78,7 +78,17 @@
                         android:layout_height="wrap_content"
                         >
                     </com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView>
+
+                    <Button
+                        android:id="@+id/btn_favorite"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Add to Favorite"
+                        android:layout_gravity="center"
+                        />
                 </LinearLayout>
+
+
             </LinearLayout>
 
             <LinearLayout

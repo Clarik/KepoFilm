@@ -7,18 +7,38 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.huawei.agconnect.cloud.database.AGConnectCloudDB;
+import com.huawei.agconnect.cloud.database.CloudDBZone;
+import com.huawei.agconnect.cloud.database.CloudDBZoneConfig;
+import com.huawei.agconnect.cloud.database.exceptions.AGConnectCloudDBException;
+import com.huawei.hmf.tasks.OnFailureListener;
+import com.huawei.hmf.tasks.OnSuccessListener;
+import com.huawei.hmf.tasks.Task;
+import com.huawei.hms.support.account.AccountAuthManager;
+import com.huawei.hms.support.account.request.AccountAuthParams;
+import com.huawei.hms.support.account.request.AccountAuthParamsHelper;
+import com.huawei.hms.support.account.result.AuthAccount;
+import com.huawei.hms.support.account.service.AccountAuthService;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 import com.teammoviealley.moviealleyapp.adapter.MovieCastAdapter;
+import com.teammoviealley.moviealleyapp.database.FavoriteMovies;
 import com.teammoviealley.moviealleyapp.model.Cast;
+import com.teammoviealley.moviealleyapp.model.FavoriteMovie;
 import com.teammoviealley.moviealleyapp.model.Genre;
 import com.teammoviealley.moviealleyapp.model.Movie;
 import com.teammoviealley.moviealleyapp.model.MovieTrailer;
 import com.teammoviealley.moviealleyapp.model.MovieTrailerVideos;
+import com.teammoviealley.moviealleyapp.model.ObjectTypeInfoHelper;
+import com.teammoviealley.moviealleyapp.model.StoreFavoriteMovie;
 import com.teammoviealley.moviealleyapp.request.ApiEndPoint;
 import com.teammoviealley.moviealleyapp.request.ApiService;
 import com.teammoviealley.moviealleyapp.response.MovieCastResponse;
@@ -45,7 +65,13 @@ public class MovieDetail extends AppCompatActivity {
     ImageView ivMovieImage;
 
     YouTubePlayerView vpMovieTrailer;
-
+    Button btnFavorite;
+    AGConnectCloudDB mCloudDB;
+    CloudDBZone mCloudDBZone;
+    CloudDBZoneConfig mConfig;
+    Gson gson = new Gson();
+    FavoriteMovies database = FavoriteMovies.getInstance();
+    String email;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -140,7 +166,7 @@ public class MovieDetail extends AppCompatActivity {
         tvGenres = findViewById(R.id.tv_genres);
 
         ivMovieImage = findViewById(R.id.iv_movie_detail_image);
-
+        btnFavorite = findViewById(R.id.btn_favorite);
         vpMovieTrailer = findViewById(R.id.vp_movie_trailer);
     }
 
@@ -235,8 +261,86 @@ public class MovieDetail extends AppCompatActivity {
         String image_path = "https://image.tmdb.org/t/p/w500/"
                 + movie.getPosterPath();
 
+        btnFavorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addFavorite(movie.getId(), movie.getTitle(), movie.getPosterPath());
+            }
+        });
+
+
         Glide.with(this)
                 .load(image_path)
                 .into(ivMovieImage);
+    }
+
+    public void addFavorite(Integer id, String name, String path){
+        FavoriteMovie fm = new FavoriteMovie(id, name, path);
+        boolean success = database.checkAndAdd(fm);
+        if(success){
+            syncFavorite();
+            Toast.makeText(this,  "Added to my Favorite", Toast.LENGTH_LONG).show();
+        }
+        else{
+            Toast.makeText(this,  "Already added to favorite", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void syncFavorite(){
+
+        AccountAuthService mAuthService;
+        AccountAuthParams mAuthParam;
+        mAuthParam = new AccountAuthParamsHelper(AccountAuthParams.DEFAULT_AUTH_REQUEST_PARAM).setEmail().createParams();
+        mAuthService = AccountAuthManager.getService(this, mAuthParam);
+        Task<AuthAccount> task = mAuthService.silentSignIn();
+        task.addOnSuccessListener(new OnSuccessListener<AuthAccount>() {
+            @Override
+            public void onSuccess(AuthAccount authAccount) {
+                email = authAccount.getEmail().toString();
+            }
+        });
+        //email = "test@binus.ac.id";
+        Toast.makeText(this,  email, Toast.LENGTH_LONG).show();
+        String json = gson.toJson(database.getFavoriteMovies());
+        //String json = email;
+        StoreFavoriteMovie store = new StoreFavoriteMovie(email,json);
+        upsertToCloudDB(store);
+    }
+
+    public void upsertToCloudDB(StoreFavoriteMovie store){
+        mCloudDB.initialize(this);
+        mCloudDB = AGConnectCloudDB.getInstance();
+        try {
+            mCloudDB.createObjectType(ObjectTypeInfoHelper.getObjectTypeInfo());
+
+        } catch (AGConnectCloudDBException e) {
+
+        }
+
+        mConfig = new CloudDBZoneConfig("user",
+                CloudDBZoneConfig.CloudDBZoneSyncProperty.CLOUDDBZONE_CLOUD_CACHE,
+                CloudDBZoneConfig.CloudDBZoneAccessProperty.CLOUDDBZONE_PUBLIC);
+        mConfig.setPersistenceEnabled(true);
+
+        try {
+            mCloudDBZone = mCloudDB.openCloudDBZone(mConfig, true);
+
+        } catch (AGConnectCloudDBException e) {
+
+        }
+
+
+        Task<Integer> upsertTask = mCloudDBZone.executeUpsert(store);
+        upsertTask.addOnSuccessListener(new OnSuccessListener<Integer>() {
+            @Override
+            public void onSuccess(Integer cloudDBZoneResult) {
+                Log.i("TAG", "Upsert " + cloudDBZoneResult + " records");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(Exception e) {
+
+            }
+        });
     }
 }

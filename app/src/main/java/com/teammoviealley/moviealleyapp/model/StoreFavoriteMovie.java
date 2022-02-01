@@ -7,19 +7,19 @@ import com.huawei.agconnect.cloud.database.annotations.PrimaryKeys;
 public class StoreFavoriteMovie extends CloudDBZoneObject {
 
     String email;
-    String favorite_movie;
+    String favoriteMovies;
 
     public StoreFavoriteMovie(String email, String json){
         super(StoreFavoriteMovie.class);
         this.email = email;
-        this.favorite_movie = json;
+        this.favoriteMovies = json;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public String getFavorite_movie() {
-        return favorite_movie;
+    public String getFavoriteMovies() {
+        return favoriteMovies;
     }
 }
