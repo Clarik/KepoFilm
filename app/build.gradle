@@ -76,4 +76,5 @@ dependencies {
     implementation 'com.huawei.hms:ads-identifier:3.4.39.302'
     implementation 'com.huawei.hms:ads-installreferrer:3.4.39.302'
     implementation 'com.huawei.hms:location:6.3.0.300'
+    implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:11.0.1'
 }

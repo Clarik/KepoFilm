@@ -71,6 +71,13 @@
                         android:textAlignment="center"
                         android:textSize="@dimen/hiad_22_dp">
                     </TextView>
+
+                    <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
+                        android:id="@+id/vp_movie_trailer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        >
+                    </com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView>
                 </LinearLayout>
             </LinearLayout>
 

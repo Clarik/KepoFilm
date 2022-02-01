@@ -1,5 +1,6 @@
 package com.teammoviealley.moviealleyapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -9,10 +10,15 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 import com.teammoviealley.moviealleyapp.adapter.MovieCastAdapter;
 import com.teammoviealley.moviealleyapp.model.Cast;
 import com.teammoviealley.moviealleyapp.model.Genre;
 import com.teammoviealley.moviealleyapp.model.Movie;
+import com.teammoviealley.moviealleyapp.model.MovieTrailer;
+import com.teammoviealley.moviealleyapp.model.MovieTrailerVideos;
 import com.teammoviealley.moviealleyapp.request.ApiEndPoint;
 import com.teammoviealley.moviealleyapp.request.ApiService;
 import com.teammoviealley.moviealleyapp.response.MovieCastResponse;
@@ -38,18 +44,71 @@ public class MovieDetail extends AppCompatActivity {
 
     ImageView ivMovieImage;
 
-    Integer movie_id;
+    YouTubePlayerView vpMovieTrailer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_detail);
 
+        setUpView();
+
         ApiEndPoint movieApi = ApiService.getMovieApi();
         getMovieWithID(movieApi);
         getMovieCast(movieApi);
-
+        getMovieTrailer(movieApi);
         setUpAds();
+    }
+
+    void getMovieTrailer(ApiEndPoint movieApi){
+        getLifecycle().addObserver(vpMovieTrailer);
+
+        Call<MovieTrailerVideos> videoTrailerCall =
+                movieApi.getMovieTrailer(
+                        getIntent().getIntExtra(EXTRA_MOVIE_ID, 0)
+                        , Credentials.API_KEY
+                );
+
+        videoTrailerCall.enqueue(new Callback<MovieTrailerVideos>() {
+            @Override
+            public void onResponse(Call<MovieTrailerVideos> call, Response<MovieTrailerVideos> response) {
+                for(MovieTrailer movie : response.body().getResults()){
+                    if(movie.getType().equalsIgnoreCase("Trailer"))
+                    {
+                        setUpVideoYoutube(movie.getKey());
+                        break;
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<MovieTrailerVideos> call, Throwable t) {
+            }
+
+        });
+    }
+
+    void setUpVideoYoutube(String key){
+
+        YouTubePlayerView youTubePlayerView = findViewById(R.id.vp_movie_trailer);
+        getLifecycle().addObserver(youTubePlayerView);
+
+        youTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
+            @Override
+            public void onReady(YouTubePlayer youTubePlayer) {
+                String videoId = "S0Q4gqBUs7c";
+                youTubePlayer.loadVideo(videoId, 0);
+            }
+        });
+//
+//        vpMovieTrailer.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
+//            @Override
+//            public void onReady(@NonNull YouTubePlayer youTubePlayer) {
+////                youTubePlayer.loadVideo(key, 0);
+////                youTubePlayer.play();
+//            }
+//        });
     }
 
     void setUpAds(){
@@ -137,7 +196,6 @@ public class MovieDetail extends AppCompatActivity {
             @Override
             public void onResponse(Call<Movie> call, Response<Movie> response) {
                 if(response.code() == 200){
-                    setUpView();
                     showMovie(response.body());
                 }
                 else{

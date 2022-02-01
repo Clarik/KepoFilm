@@ -1,6 +1,7 @@
 package com.teammoviealley.moviealleyapp.request;
 
 import com.teammoviealley.moviealleyapp.model.Movie;
+import com.teammoviealley.moviealleyapp.model.MovieTrailerVideos;
 import com.teammoviealley.moviealleyapp.response.MovieCastResponse;
 import com.teammoviealley.moviealleyapp.response.MovieSearchResponse;
 
@@ -11,6 +12,12 @@ import retrofit2.http.Query;
 
 public interface ApiEndPoint {
 
+
+    @GET("/3/movie/{movie_id}/videos")
+    Call<MovieTrailerVideos> getMovieTrailer(
+            @Path("movie_id") Integer movie_id,
+            @Query("api_key") String api_key
+    );
 
     @GET("/3/movie/{movie_id}/credits")
     Call<MovieCastResponse> getCast(
