@@ -104,7 +104,6 @@ public class FragmentHomeMovie extends Fragment {
     void setUpTopRatedRecyclerView(){
         RecyclerView topRatedRecyclerView = v.findViewById(R.id.rv_top_rated_movie);
         MovieViewImageAdapter adapter = new MovieViewImageAdapter(v.getContext(), topRatedMovieList);
-
         topRatedRecyclerView.setAdapter(adapter);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(v.getContext(), LinearLayoutManager.HORIZONTAL, false);

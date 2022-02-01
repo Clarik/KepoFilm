@@ -1,25 +1,19 @@
 package com.teammoviealley.moviealleyapp.fragment;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
-import com.huawei.agconnect.AGConnectInstance;
-import com.huawei.agconnect.AGConnectOptionsBuilder;
-import com.huawei.agconnect.auth.AGConnectAuth;
 import com.huawei.agconnect.cloud.database.AGConnectCloudDB;
 import com.huawei.agconnect.cloud.database.CloudDBZone;
 import com.huawei.agconnect.cloud.database.CloudDBZoneConfig;
@@ -30,15 +24,11 @@ import com.huawei.agconnect.cloud.database.exceptions.AGConnectCloudDBException;
 import com.huawei.hmf.tasks.OnFailureListener;
 import com.huawei.hmf.tasks.OnSuccessListener;
 import com.huawei.hmf.tasks.Task;
-import com.huawei.hms.support.account.AccountAuthManager;
-import com.huawei.hms.support.account.request.AccountAuthParams;
-import com.huawei.hms.support.account.request.AccountAuthParamsHelper;
-import com.huawei.hms.support.account.service.AccountAuthService;
-import com.teammoviealley.moviealleyapp.MainActivity;
 import com.teammoviealley.moviealleyapp.R;
+import com.teammoviealley.moviealleyapp.adapter.MovieFavoriteAdapter;
+import com.teammoviealley.moviealleyapp.adapter.MovieViewImageAdapter;
 import com.teammoviealley.moviealleyapp.database.DatabaseHandler;
 import com.teammoviealley.moviealleyapp.database.FavoriteMovies;
-import com.teammoviealley.moviealleyapp.database.PopularMovies;
 import com.teammoviealley.moviealleyapp.model.FavoriteMovie;
 import com.teammoviealley.moviealleyapp.model.ObjectTypeInfoHelper;
 import com.teammoviealley.moviealleyapp.model.StoreFavoriteMovie;
@@ -60,7 +50,6 @@ public class FragmentFavorite extends Fragment {
     CloudDBZoneConfig mConfig;
 
     DatabaseHandler db;
-
     public FragmentFavorite(String email) {
         // Required empty public constructor
         this.email = email;
@@ -81,11 +70,23 @@ public class FragmentFavorite extends Fragment {
 
         db = new DatabaseHandler(getContext());
 
-        for(FavoriteMovie fav : db.getMovieFavorite(email)){
+        setUpRecyclerView();
+
+        return v;
+    }
+
+    void setUpRecyclerView(){
+        Vector<FavoriteMovie> favMov = db.getFav();
+        for(FavoriteMovie fav: favMov){
             Log.d("Movmov", fav.getTitle());
         }
 
-        return v;
+        RecyclerView favRecyclerView = v.findViewById(R.id.rv_favorite);
+        MovieFavoriteAdapter adapter = new MovieFavoriteAdapter(v.getContext(), favMov);
+        favRecyclerView.setAdapter(adapter);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(v.getContext(), LinearLayoutManager.VERTICAL, false);
+        favRecyclerView.setLayoutManager(layoutManager);
     }
 
 

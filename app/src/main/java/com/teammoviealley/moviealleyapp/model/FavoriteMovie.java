@@ -4,22 +4,20 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class FavoriteMovie {
-    @SerializedName("id")
-    @Expose
+
     private Integer id;
 
-    @SerializedName("title")
-    @Expose
     private String title;
 
-    @SerializedName("poster_path")
-    @Expose
     private String posterPath;
 
-    public FavoriteMovie(Integer id, String title, String posterPath) {
+    private String email;
+
+    public FavoriteMovie(String email, Integer id, String title, String posterPath) {
         this.id = id;
         this.title = title;
         this.posterPath = posterPath;
+        this.email = email;
     }
 
     public Integer getId() {
@@ -32,5 +30,9 @@ public class FavoriteMovie {
 
     public String getPosterPath() {
         return posterPath;
+    }
+
+    public String getEmail() {
+        return email;
     }
 }

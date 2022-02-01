@@ -12,14 +12,15 @@ import com.teammoviealley.moviealleyapp.model.FavoriteMovie;
 import java.util.Vector;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
+
     private static final int VERSION = 1;
-    private static final String NAME = "FavoriteDatabase";
-    private static final String FAVORITE_TABLE = "Favorite";
+    private static final String NAME = "favoriteDatabase";
+    private static final String FAV_TABLE = "favoritemovie";
     private static final String ID = "id";
+    private static final String MOVIEID = "movieid";
     private static final String EMAIL = "email";
-    private static final String MOVIE_ID = "movie_id";
-    private static final String MOVIE_TITLE = "movie_title";
-    private static final String MOVIE_PATH = "movie_path";
+    private static final String TITLE = "title";
+    private static final String POSTERPATH = "posterpath";
 
     private SQLiteDatabase db;
 
@@ -28,52 +29,55 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        String CREATE_FAVORITE_TABLE = "CREATE TABLE " + FAVORITE_TABLE
-                + "("
-                + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+    public void onCreate(SQLiteDatabase db) {
+        String CREATE_FAV_TABLE = "CREATE TABLE " + FAV_TABLE
+                + "(" + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + MOVIEID + " INTEGER, "
                 + EMAIL + " TEXT, "
-                + MOVIE_ID + " INTEGER, "
-                + MOVIE_TITLE +" TEXT, "
-                + MOVIE_PATH + " TEXT "
+                + TITLE + " TEXT, "
+                + POSTERPATH + " TEXT "
                 + ")";
-        db.execSQL(CREATE_FAVORITE_TABLE);
+        db.execSQL(CREATE_FAV_TABLE);
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-        db.execSQL("DROP TABLE IF EXISTS " + FAVORITE_TABLE);
+    public void onUpgrade(SQLiteDatabase db, int i, int i1) {
+        db.execSQL("DROP TABLE IF EXISTS " + FAV_TABLE);
         onCreate(db);
     }
 
-    public void insertFavorite(String email, Integer movie_id, String movie_title, String movie_path){
+    public void insertFav(FavoriteMovie fav){
         db = this.getWritableDatabase();
 
-        ContentValues cv = new ContentValues();
-        cv.put(EMAIL, email);
-        cv.put(MOVIE_ID, movie_id);
-        cv.put(MOVIE_TITLE, movie_title);
-        cv.put(MOVIE_PATH, movie_path);
-        db.insert(FAVORITE_TABLE, null, cv);
+        String sql = "INSERT INTO " + FAV_TABLE + " VALUES ( NULL, "
+                + fav.getId() + ", \'"
+                + fav.getEmail() + "\', \'"
+                + fav.getTitle() + "\', \'"
+                + fav.getPosterPath() + "\' "
+                + ")";
+        Log.d("Movmov", sql);
+        db.execSQL(sql);
     }
 
-    public Vector<FavoriteMovie> getMovieFavorite(String email){
+    public void deleteTask(int id){
+        db.delete(FAV_TABLE, ID + "= ?", new String[] {String.valueOf(id)});
+    }
+
+    public Vector<FavoriteMovie> getFav(){
         db = this.getReadableDatabase();
-        Vector<FavoriteMovie> favList = new Vector<>();
-        Log.d("Movmov", "ABC");
+        Vector<FavoriteMovie> favMov = new Vector<>();
         Cursor cur = null;
         db.beginTransaction();
         try{
-            cur = db.query(FAVORITE_TABLE, null, null, null, null, null, null, null);
+            cur = db.query(FAV_TABLE, null, null, null, null, null, null, null);
             if(cur != null){
                 if(cur.moveToFirst()){
                     do{
-                        if(cur.getString(Math.abs(cur.getColumnIndex(EMAIL))).equalsIgnoreCase(email)){
-                            Integer movie_id = cur.getInt(Math.abs(cur.getColumnIndex(MOVIE_ID)));
-                            String title = cur.getString(Math.abs(cur.getColumnIndex(MOVIE_TITLE)));
-                            String path = cur.getString(Math.abs(cur.getColumnIndex(MOVIE_PATH)));
-                            favList.add(new FavoriteMovie(movie_id, title, path));
-                        }
+                        String email = cur.getString(Math.abs(cur.getColumnIndex(EMAIL)));
+                        Integer movie_id = cur.getInt(Math.abs(cur.getColumnIndex(MOVIEID)));
+                        String title = cur.getString(Math.abs(cur.getColumnIndex(TITLE)));
+                        String poster = cur.getString(Math.abs(cur.getColumnIndex(POSTERPATH)));
+                        favMov.add(new FavoriteMovie(email, movie_id, title, poster));
                     }
                     while(cur.moveToNext());
                 }
@@ -84,6 +88,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             assert cur != null;
             cur.close();
         }
-        return favList;
+        return favMov;
     }
+
 }

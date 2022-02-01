@@ -90,6 +90,7 @@ public class MovieDetail extends AppCompatActivity {
         getMovieCast(movieApi);
 
 
+        db = new DatabaseHandler(this);
 
         getMovieTrailer(movieApi);
 
@@ -280,6 +281,7 @@ public class MovieDetail extends AppCompatActivity {
                 .into(ivMovieImage);
     }
 
+
     public void addFavorite(Integer id, String name, String path){
 
         AccountAuthService mAuthService;
@@ -291,13 +293,11 @@ public class MovieDetail extends AppCompatActivity {
             @Override
             public void onSuccess(AuthAccount authAccount) {
                 email = authAccount.getEmail().toString();
-                db = new DatabaseHandler(getApplicationContext());
-                db.insertFavorite(email, id, name, path);
+                Log.d("Movmov", "WOI");
+                db.insertFav(new FavoriteMovie(email, id, name, path));
+                Log.d("Movmov", "Success Add Favorite");
             }
         });
-
-
-
         /*
         FavoriteMovie fm = new FavoriteMovie(id, name, path);
         boolean success = database.checkAndAdd(fm);
