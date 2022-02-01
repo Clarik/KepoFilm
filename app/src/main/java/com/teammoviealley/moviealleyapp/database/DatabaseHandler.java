@@ -46,8 +46,22 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void insertFav(FavoriteMovie fav){
+    public boolean insertFav(FavoriteMovie fav){
         db = this.getWritableDatabase();
+        for(FavoriteMovie fm : getFav()){
+            Log.d("Movmov", fav.getEmail() + " " + fm.getEmail());
+            Log.d("Movmov", fav.getId() + " " + fm.getId());
+            Log.d("Movmov",
+                    (fav.getEmail().equalsIgnoreCase(fm.getEmail())
+                    ) ? "True" : "False"
+            );Log.d("Movmov",
+                    (fav.getId().compareTo(fm.getId()) == 0
+                    ) ? "True" : "False"
+            );
+            if(fav.getEmail().equalsIgnoreCase(fm.getEmail())
+            && fav.getId().compareTo(fm.getId()) == 0)
+                return false;
+        }
 
         String sql = "INSERT INTO " + FAV_TABLE + " VALUES ( NULL, "
                 + fav.getId() + ", \'"
@@ -57,6 +71,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + ")";
         Log.d("Movmov", sql);
         db.execSQL(sql);
+        return true;
     }
 
     public void deleteTask(int id){

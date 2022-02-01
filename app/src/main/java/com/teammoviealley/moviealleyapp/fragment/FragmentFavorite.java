@@ -79,8 +79,9 @@ public class FragmentFavorite extends Fragment {
         Vector<FavoriteMovie> favMov = db.getFav();
         for(FavoriteMovie fav: favMov){
             Log.d("Movmov", fav.getTitle());
+            if(email.equalsIgnoreCase(fav.getEmail()) == false)
+                favMov.remove(fav);
         }
-
         RecyclerView favRecyclerView = v.findViewById(R.id.rv_favorite);
         MovieFavoriteAdapter adapter = new MovieFavoriteAdapter(v.getContext(), favMov);
         favRecyclerView.setAdapter(adapter);

@@ -67,11 +67,7 @@ public class MovieDetail extends AppCompatActivity {
 
     YouTubePlayerView vpMovieTrailer;
     Button btnFavorite;
-    AGConnectCloudDB mCloudDB;
-    CloudDBZone mCloudDBZone;
-    CloudDBZoneConfig mConfig;
-    Gson gson = new Gson();
-    FavoriteMovies database = FavoriteMovies.getInstance();
+
     String email;
 
 
@@ -293,81 +289,12 @@ public class MovieDetail extends AppCompatActivity {
             @Override
             public void onSuccess(AuthAccount authAccount) {
                 email = authAccount.getEmail().toString();
-                Log.d("Movmov", "WOI");
-                db.insertFav(new FavoriteMovie(email, id, name, path));
-                Log.d("Movmov", "Success Add Favorite");
-            }
-        });
-        /*
-        FavoriteMovie fm = new FavoriteMovie(id, name, path);
-        boolean success = database.checkAndAdd(fm);
-        if(success){
-//            syncFavorite();
-            Toast.makeText(this,  "Added to my Favorite", Toast.LENGTH_LONG).show();
-        }
-        else{
-            Toast.makeText(this,  "Already added to favorite", Toast.LENGTH_LONG).show();
-        }
-        */
-    }
-
-    public void syncFavorite(){
-
-        AccountAuthService mAuthService;
-        AccountAuthParams mAuthParam;
-        mAuthParam = new AccountAuthParamsHelper(AccountAuthParams.DEFAULT_AUTH_REQUEST_PARAM).setEmail().createParams();
-        mAuthService = AccountAuthManager.getService(this, mAuthParam);
-        Task<AuthAccount> task = mAuthService.silentSignIn();
-        task.addOnSuccessListener(new OnSuccessListener<AuthAccount>() {
-            @Override
-            public void onSuccess(AuthAccount authAccount) {
-                email = authAccount.getEmail().toString();
-//                Toast.makeText(this,  email, Toast.LENGTH_LONG).show();
-                Log.d("YoutubeTest", "Email " + email);
-                String json = gson.toJson(database.getFavoriteMovies());
-                //String json = email;
-                StoreFavoriteMovie store = new StoreFavoriteMovie(email,json);
-                upsertToCloudDB(store);
-            }
-        });
-        //email = "test@binus.ac.id";
-
-    }
-
-    public void upsertToCloudDB(StoreFavoriteMovie store){
-        mCloudDB.initialize(this);
-        mCloudDB = AGConnectCloudDB.getInstance();
-        try {
-            mCloudDB.createObjectType(ObjectTypeInfoHelper.getObjectTypeInfo());
-
-        } catch (AGConnectCloudDBException e) {
-
-        }
-
-        mConfig = new CloudDBZoneConfig("user",
-                CloudDBZoneConfig.CloudDBZoneSyncProperty.CLOUDDBZONE_CLOUD_CACHE,
-                CloudDBZoneConfig.CloudDBZoneAccessProperty.CLOUDDBZONE_PUBLIC);
-        mConfig.setPersistenceEnabled(true);
-
-        try {
-            mCloudDBZone = mCloudDB.openCloudDBZone(mConfig, true);
-
-        } catch (AGConnectCloudDBException e) {
-
-        }
-
-
-        Task<Integer> upsertTask = mCloudDBZone.executeUpsert(store);
-        upsertTask.addOnSuccessListener(new OnSuccessListener<Integer>() {
-            @Override
-            public void onSuccess(Integer cloudDBZoneResult) {
-                Log.i("TAG", "Upsert " + cloudDBZoneResult + " records");
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(Exception e) {
-
+                if(db.insertFav(new FavoriteMovie(email, id, name, path)))
+                    Log.d("Movmov", "Success Add Favorite");
+                else
+                    Log.d("Movmov", "Movie already on Your Favorite");
             }
         });
     }
+
 }
