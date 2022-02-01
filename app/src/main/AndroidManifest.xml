@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools" package="com.app.huaweiapp">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools" package="com.teammoviealley.moviealleyapp">
     <queries>
         <intent>
             <action android:name="com.huawei.hms.core.aidlservice" />
         </intent>
     </queries>
     <application android:allowBackup="true" android:icon="@drawable/moviealley" android:label="@string/app_name" android:roundIcon="@drawable/moviealley" android:supportsRtl="true" android:theme="@style/Theme.HuaweiApp">
-        <activity android:name=".MovieDetail" />
-        <activity android:name=".HomeActivity" />
-        <activity android:name=".MainActivity" android:exported="true">
+        <activity android:name="com.teammoviealley.moviealleyapp.MovieDetail" />
+        <activity android:name="com.teammoviealley.moviealleyapp.HomeActivity" />
+        <activity android:name="com.teammoviealley.moviealleyapp.MainActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

@@ -17,21 +17,21 @@
 	},
 	"client":{
 		"cp_id":"2640062000000779104",
-		"product_id":"737518067794050045",
-		"client_id":"793505466398297280",
-		"client_secret":"9C00EDC3D8481B5CD7673A8174B513983B8821DCD439A33702897BE83F0ABCF4",
-		"project_id":"737518067794050045",
-		"app_id":"105288667",
-		"api_key":"DAEDACX3tKExlpWn1bK2EnD8AziILTybtdyeDkHQ0sGQ0hv5M29RXidXNKcot4Op7BDSXVqyWqCZYrYzUjHvaJPIjlju81m5uTrgZA==",
-		"package_name":"com.app.huaweiapp"
+		"product_id":"737518067794447724",
+		"client_id":"816055178598822272",
+		"client_secret":"1661469C13F1BF66C5D40F74C7C3E2D9FA9AF1E02CF65D93398F8CD611070CCC",
+		"project_id":"737518067794447724",
+		"app_id":"105464861",
+		"api_key":"DAEDAO+GjlN4JkL3RQNO+NbTcOwWKs3eITsiWR67CLnZb7koNSvHwEThGymMGDZ2owV+BQeoCCqTA3AnAhykNsZ6w8MfyYdkH7LHxQ==",
+		"package_name":"com.teammoviealley.moviealleyapp"
 	},
 	"oauth_client":{
-		"client_id":"105288667",
+		"client_id":"105464861",
 		"client_type":1
 	},
 	"app_info":{
-		"app_id":"105288667",
-		"package_name":"com.app.huaweiapp"
+		"app_id":"105464861",
+		"package_name":"com.teammoviealley.moviealleyapp"
 	},
 	"service":{
 		"analytics":{
@@ -57,17 +57,17 @@
 	"configuration_version":"3.0",
 	"appInfos":[
 		{
-			"package_name":"com.app.huaweiapp",
+			"package_name":"com.teammoviealley.moviealleyapp",
 			"client":{
-				"app_id":"105288667"
+				"app_id":"105464861"
 			},
 			"app_info":{
-				"package_name":"com.app.huaweiapp",
-				"app_id":"105288667"
+				"package_name":"com.teammoviealley.moviealleyapp",
+				"app_id":"105464861"
 			},
 			"oauth_client":{
 				"client_type":1,
-				"client_id":"105288667"
+				"client_id":"105464861"
 			}
 		}
 	]

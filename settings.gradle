@@ -1,2 +1,2 @@
-rootProject.name = "HuaweiApp"
+rootProject.name = "MovieAlleyApp"
 include ':app'

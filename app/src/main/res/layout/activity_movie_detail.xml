@@ -201,6 +201,7 @@
                 hwads:adId="testw6vs28auh3"
                 hwads:bannerSize="BANNER_SIZE_360_57" />
 
+
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
