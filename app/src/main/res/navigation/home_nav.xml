@@ -16,8 +16,14 @@
         android:label="fragment_search_movie"
         tools:layout="@layout/fragment_search_movie" />
     <fragment
+        android:id="@+id/fragmentFavorite"
+        android:name="com.teammoviealley.moviealleyapp.fragment.FragmentFavorite"
+        android:label="fragment_favorite"
+        tools:layout="@layout/fragment_favorite" />
+    <fragment
         android:id="@+id/fragmentAccount"
         android:name="com.teammoviealley.moviealleyapp.fragment.FragmentAccount"
         android:label="fragment_account"
         tools:layout="@layout/fragment_account" />
+
 </navigation>

@@ -8,6 +8,9 @@
         android:id="@+id/fragmentSearchMovie"
         android:title="Search" android:icon="@drawable/ic_search"/>
     <item
+        android:id="@+id/fragmentFavorite"
+        android:title="Favorite" android:icon="@drawable/ic_favorite"/>
+    <item
         android:id="@+id/fragmentAccount"
         android:title="Account" android:icon="@drawable/ic_account"/>
 </menu>
